@@ -1,0 +1,30 @@
+INSERT INTO Subject (SubjID, subj_name)
+VALUES (1, 'English'),
+(2, 'Math'),
+(3, 'Science'),
+(4, 'Filipino'),
+(5, 'AP');
+INSERT INTO Teacher (teacherID, teacher_name,subjID)
+VALUES (1, 'Shaina Lygoe', 1),
+(2, 'Kacie Brisbane', 2),
+(3, 'Harald Cessford', 3),
+(4, 'Domenic Childerhouse', 4),
+(5, 'Jobi Pasley',5);
+INSERT INTO Student (studID, stud_name,stud_address, teacherID, subjID)
+VALUES (1, 'Reena Zanardii', '1 Rusk Street', 1, 1),
+(2, 'Giffy Mapplebeck','0041 Farwell Street', 2, 2),
+(3, 'Brandise O Connell','686 Spenser Trail', 3, 3),
+(4, 'Peirce Philippeaux','00471 Annamark Place', 4, 4),
+(5, 'Sherlock Lambertz','4393 Waxwing Street',5 , 5);
+INSERT INTO Place (placeID, place_name, studID, teacherID)
+VALUES (1 , 'Dasma', 1, 1 ),
+(2 , 'Imus', 2,2 ),
+(3 , 'Trece', 3,3 ),
+(4 , 'Trece', 4 ,4),
+(5 , 'Dasma', 5 5);
+INSERT INTO Grade (gradeID, grade_level, studID)
+VALUES (1 , 'One', 1 ),
+(2 , 'One', 2 ),
+(3 , 'Three', 3 ),
+(4 , 'Three', 4 ),
+(5 , 'Five', 5 );
