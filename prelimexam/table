@@ -1,0 +1,32 @@
+CREATE TABLE Subject
+(
+subjID integer [primary key],
+subj_name varchar
+)
+CREATE TABLE Teacher
+(
+teacherID integer [primary key],
+teacher_name varchar,
+subjID integer
+)
+CREATE TABLE Place
+(
+placeID integer [primary key],
+place_name varchar,
+studID integer,
+teacherID integer
+)
+CREATE TABLE Student
+(
+studID integer [primary key],
+stud_name varchar,
+stud_address varchar,
+teacherID integer,
+subjID integer
+)
+CREATE TABLE Grade
+(
+ gradeID integer [primary key],
+ grade_level integer,
+ studID integer,
+)
