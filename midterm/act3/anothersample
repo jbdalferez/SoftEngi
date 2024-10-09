@@ -1,0 +1,95 @@
+CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(50) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('Software Engineer', 'Network Administrator', 'Database Administrator') NOT NULL,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  phone_number VARCHAR(20) NOT NULL,
+  date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+<?php
+// Configuration
+$db_host = 'localhost';
+$db_username = 'root';
+$db_password = '';
+$db_name = 'registration_system';
+ 
+// Create a PDO instance
+$pdo = new PDO("mysql:host=$db_host;dbname=$db_name", $db_username, $db_password);
+ 
+// Create a function to register a user
+function registerUser ($username, $email, $password, $role, $first_name, $last_name, $phone_number) {
+  $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role, first_name, last_name, phone_number) VALUES (:username, :email, :password, :role, :first_name, :last_name, :phone_number)");
+  $stmt->bindParam(':username', $username);
+  $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+  $stmt->bindParam(':role', $role);
+  $stmt->bindParam(':first_name', $first_name);
+  $stmt->bindParam(':last_name', $last_name);
+  $stmt->bindParam(':phone_number', $phone_number);
+  $stmt->execute();
+  return $pdo->lastInsertId();
+}
+ 
+// Create a function to read all users
+function getAllUsers() {
+  $stmt = $pdo->prepare("SELECT * FROM users");
+  $stmt->execute();
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+ 
+// Create a function to read a single user
+function getUser($id) {
+  $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+  $stmt->bindParam(':id', $id);
+  $stmt->execute();
+  return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+ 
+// Create a function to update a user
+function updateUser($id, $username, $email, $password, $role, $first_name, $last_name, $phone_number) {
+  $stmt = $pdo->prepare("UPDATE users SET username = :username, email = :email, password = :password, role = :role, first_name = :first_name, last_name = :last_name, phone_number = :phone_number WHERE id = :id");
+  $stmt->bindParam(':id', $id);
+  $stmt->bindParam(':username', $username);
+  $stmt->bindParam(':email', $email);
+  $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+  $stmt->bindParam(':role', $role);
+  $stmt->bindParam(':first_name', $first_name);
+  $stmt->bindParam(':last_name', $last_name);
+  $stmt->bindParam(':phone_number', $phone_number);
+  $stmt->execute();
+}
+ 
+// Create a function to delete a user
+function deleteUser($id) {
+  $stmt = $pdo->prepare("DELETE FROM users WHERE id = :id");
+  $stmt->bindParam(':id', $id);
+  $stmt->execute();
+}
+ 
+// Example usage:
+if (isset($_POST['register'])) {
+  $username = $_POST['username'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $role = $_POST['role'];
+  $first_name = $_POST['first_name'];
+  $last_name = $_POST['last_name'];
+  $phone_number = $_POST['phone_number'];
+  $id = registerUser ($username, $email, $password, $role, $first_name, $last_name, $phone_number);
+  echo "User  registered successfully with ID $id";
+}
+ 
+if (isset($_GET['read'])) {
+  $users = getAllUsers();
+  foreach ($users as $user) {
+    echo "ID: " . $user['id'] . ", Username: " . $user['username'] . ", Email: " . $user['email'] . "<br>";
+  }
+}
+ 
+if (isset($_GET['read_single'])) {
+  $id = $_GET['id'];
+  $user = getUser($id);
+  echo "ID: " . $user['id'] . ", Username: " . $user['username'] . ", Email
